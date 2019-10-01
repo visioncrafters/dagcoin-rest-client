@@ -63,7 +63,7 @@ public class DagCoinApiClientService {
 	 * Returns the exchange rate DAG/EUR
 	 * 
 	 * @return {@link ExchangeRateResponse}
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - in case of an error
 	 */
 	public ExchangeRateResponse getExchangeRate() throws DagCoinRestClientException {
 		Client client = ClientBuilder.newClient();
@@ -96,9 +96,9 @@ public class DagCoinApiClientService {
 	/**
 	 * Validates given walletID, returns true if walletId is valid, false otherwise
 	 * 
-	 * @param walletId
+	 * @param walletId - wallet address to be validated
 	 * @return {@link ValidateWalletResponse}
-	 * @throws Exception
+	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public ValidateWalletResponse validateWalletAddress(String walletId) throws DagCoinRestClientException {
 		Client client = ClientBuilder.newClient();
@@ -132,9 +132,9 @@ public class DagCoinApiClientService {
 	/**
 	 * Returns the wallet balance
 	 * 
-	 * @param walletId
+	 * @param walletId - wallet address whose balance needs to be retrieved
 	 * @return {@link WalletBalanceResponse}
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public WalletBalanceResponse getBalance(String walletId) throws DagCoinRestClientException {
 		Client client = ClientBuilder.newClient();
@@ -172,9 +172,9 @@ public class DagCoinApiClientService {
 	/**
 	 * Returns the balance of customer balance
 	 * 
-	 * @param walletId
+	 * @param walletId - wallet address for retrieving customer balance
 	 * @return {@link CustomerWalletBalanceResponse}
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public CustomerWalletBalanceResponse getCustomerBalance(String walletId) throws DagCoinRestClientException {
 		Client client = ClientBuilder.newClient();
@@ -213,11 +213,11 @@ public class DagCoinApiClientService {
 	/**
 	 * Adds money to the given wallet ID
 	 * 
-	 * @param recipentWalletId
-	 * @param amount
-	 * @param currency
+	 * @param recipientWalletId - wallet address of the recipient
+	 * @param amount - amount to be transferred/added
+	 * @param currency - of the amount
 	 * @return {@link TransactionResponse}
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public TransactionResponse makeTransaction(String recipientWalletId, String amount, String currency)
 			throws DagCoinRestClientException {
@@ -258,7 +258,7 @@ public class DagCoinApiClientService {
 	 * Generates and returns a new paper wallet
 	 * 
 	 * @return {@link PaperWalletResponse}
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public PaperWalletResponse generatePaperWallet() throws DagCoinRestClientException {
 		Client client = ClientBuilder.newClient();
@@ -292,9 +292,9 @@ public class DagCoinApiClientService {
 	/**
 	 * Utility method to convert object to string
 	 * 
-	 * @param obj
+	 * @param obj - object to be converted to string
 	 * @return
-	 * @throws DagCoinRestClientException
+	 * @throws DagCoinRestClientException - in case of any exception
 	 */
 	private String convertObjectToString(Object obj) throws DagCoinRestClientException {
 		try {

@@ -34,7 +34,9 @@ public class PropertiesLoader {
 	/**
 	 * Returns the value of property
 	 * 
-	 * @throws DagCoinRestClientException
+	 * @param propertyName - name of the property to be retrieved
+	 * @return property value
+	 * @throws DagCoinRestClientException - if property is not found
 	 */
 	public static String getProperty(String propertyName) throws DagCoinRestClientException {
 		return prop.getProperty(propertyName);
