@@ -20,6 +20,8 @@ import com.dagcoin.exception.DagCoinRestClientException;
 
 public class DagCoinApiClientServiceTest {
 	
+	/*
+	
 	private static final Logger log = LoggerFactory.getLogger(DagCoinApiClientServiceTest.class.getName());
 	private DagCoinApiClientService service;
 	private String walletId;
@@ -81,4 +83,6 @@ public class DagCoinApiClientServiceTest {
 			this.walletId = "OGNCQNQT43TDD5PFVIAG6AOK2R7AE3PD";
 		}
 	}
+	
+	*/
 }
