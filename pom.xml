@@ -3,6 +3,14 @@
 	<groupId>org.dagcoin</groupId>
 	<artifactId>dagcoin-rest-client</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
+	
+	<name>DagCoin REST Client</name>  
+	<description>REST Client implementation for DagCoin extension written for BATM code</description>
+  	<url>http://maven.apache.org</url>  
+  	<licenses></licenses>
+  	<organization></organization>
+  	<developers></developers>
+  	<contributors></contributors>
 
 	<dependencies>
 		<dependency>
