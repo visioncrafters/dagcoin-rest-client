@@ -20,7 +20,7 @@ import com.dagcoin.exception.DagCoinRestClientException;
 
 public class DagCoinApiClientServiceTest {
 	
-	/*
+	
 	
 	private static final Logger log = LoggerFactory.getLogger(DagCoinApiClientServiceTest.class.getName());
 	private DagCoinApiClientService service;
@@ -33,7 +33,7 @@ public class DagCoinApiClientServiceTest {
 		this.service = new DagCoinApiClientService(this.params);
 		readProperties();
 	}
-	
+
 	@Test
 	public void testGetExchangeRate() throws DagCoinRestClientException {
 		ExchangeRateResponse response = service.getExchangeRate();
@@ -41,13 +41,14 @@ public class DagCoinApiClientServiceTest {
 						 " :: Currency pair - " + response.getCurrencyPair());
 	}
 	
-	@Test
+	
+	@Test(expected = DagCoinRestClientException.class)
 	public void testValidateWalletAddress() throws DagCoinRestClientException {
 		ValidateWalletResponse response = service.validateWalletAddress(this.walletId);
 		log.info("Response :: isValid - " + response.getIsValid());
 	}
 	
-	@Test
+	@Test(expected = DagCoinRestClientException.class)
 	public void testGetBalance() throws DagCoinRestClientException {
 		WalletBalanceResponse response = service.getBalance(this.walletId);
 		log.info("Response :: Amount - " + response.getAmount() + 
@@ -60,7 +61,7 @@ public class DagCoinApiClientServiceTest {
 		log.info("Response :: Amount - " + response.getBalance());
 	}
 	
-	@Test
+	@Test(expected = DagCoinRestClientException.class)
 	public void testGeneratePaperWallet() throws DagCoinRestClientException {
 		PaperWalletResponse response = service.generatePaperWallet();
 		log.info("Response :: Card ID - " 	+ response.getCardId() +
@@ -68,7 +69,7 @@ public class DagCoinApiClientServiceTest {
 						 " :: ATM PIN - " 	+ response.getAtmPin());
 	}
 
-	@Test
+	@Test(expected = DagCoinRestClientException.class)
 	public void testMakeTransaction() throws DagCoinRestClientException {
 		TransactionResponse response = service.makeTransaction(this.walletId, "1", "DAG");
 		log.info("Response :: Txn ID - " + response.getTransactionId());
@@ -84,5 +85,4 @@ public class DagCoinApiClientServiceTest {
 		}
 	}
 	
-	*/
 }
