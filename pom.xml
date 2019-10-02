@@ -6,11 +6,25 @@
 	
 	<name>DagCoin REST Client</name>  
 	<description>REST Client implementation for DagCoin extension written for BATM code</description>
-  	<url>http://maven.apache.org</url>  
-  	<licenses></licenses>
-  	<organization></organization>
-  	<developers></developers>
-  	<contributors></contributors>
+  	<url>https://dagcoin.org/</url>  
+  	<licenses>
+  		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+  	</licenses>
+  	<developers>
+  		<developer>
+            <name>Shubhra Pahwa</name>
+            <id>shubhrapahwa</id>
+            <email>shubhra@singleton.ee</email>
+            <organization>Visioncraft</organization>
+            <roles>
+              <role>Java Developer</role>
+            </roles>
+        </developer>
+  	</developers>
 
 	<dependencies>
 		<dependency>
