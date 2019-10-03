@@ -20,8 +20,6 @@ import com.dagcoin.exception.DagCoinRestClientException;
 
 public class DagCoinApiClientServiceTest {
 	
-	
-	
 	private static final Logger log = LoggerFactory.getLogger(DagCoinApiClientServiceTest.class.getName());
 	private DagCoinApiClientService service;
 	private String walletId;
@@ -42,7 +40,7 @@ public class DagCoinApiClientServiceTest {
 	}
 	
 	
-	@Test(expected = DagCoinRestClientException.class)
+	@Test
 	public void testValidateWalletAddress() throws DagCoinRestClientException {
 		ValidateWalletResponse response = service.validateWalletAddress(this.walletId);
 		log.info("Response :: isValid - " + response.getIsValid());
@@ -61,7 +59,7 @@ public class DagCoinApiClientServiceTest {
 		log.info("Response :: Amount - " + response.getBalance());
 	}
 	
-	@Test(expected = DagCoinRestClientException.class)
+	@Test
 	public void testGeneratePaperWallet() throws DagCoinRestClientException {
 		PaperWalletResponse response = service.generatePaperWallet();
 		log.info("Response :: Card ID - " 	+ response.getCardId() +

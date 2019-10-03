@@ -59,13 +59,13 @@ public class CryptoEngine {
 	
 	public MultivaluedMap<String, Object> getHeaders(String body) throws DagCoinRestClientException {
 		MultivaluedMap<String, Object> map = new MultivaluedHashMap<String, Object>();
-		map.add("public_key", this.publicKey);
+		map.add("publickey", this.publicKey);
 		map.add("signature", computeHash(body));
 		return map;
 	}
 	
 	public boolean validateHeaders(MultivaluedMap<String, Object> headers, String responseBody) throws DagCoinRestClientException {
-		String public_key = (String)headers.get("public_key").get(0);
+		String public_key = (String)headers.get("publickey").get(0);
 		String signature = (String)headers.get("signature").get(0);
 		
 		if (!public_key.equalsIgnoreCase(this.publicKey)) return false;
