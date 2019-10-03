@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.dagcoin</groupId>
 	<artifactId>dagcoin-rest-client</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	
 	<name>DagCoin REST Client</name>  
 	<description>REST Client implementation for DagCoin extension written for BATM code</description>
@@ -78,7 +78,7 @@
 		<connection>scm:git:https://github.com/visioncrafters/dagcoin-rest-client.git</connection>
 		<developerConnection>scm:git:https://github.com/visioncrafters/dagcoin-rest-client.git</developerConnection>
 		<url>https://github.com/visioncrafters/dagcoin-rest-client.git</url>
-		<tag>dagcoin-rest-client-0.0.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
