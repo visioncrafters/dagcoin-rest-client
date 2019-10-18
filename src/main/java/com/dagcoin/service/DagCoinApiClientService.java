@@ -8,13 +8,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dagcoin.domain.CustomerWalletBalanceResponse;
 import com.dagcoin.domain.DagCoinParameters;
-import com.dagcoin.domain.DagEnvironment;
 import com.dagcoin.domain.ExchangeRateResponse;
 import com.dagcoin.domain.PaperWalletResponse;
 import com.dagcoin.domain.TransactionRequest;
@@ -23,7 +21,6 @@ import com.dagcoin.domain.ValidateWalletResponse;
 import com.dagcoin.domain.WalletBalanceResponse;
 import com.dagcoin.exception.DagCoinRestClientException;
 import com.dagcoin.util.CryptoEngine;
-import com.dagcoin.util.PropertiesLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -40,23 +37,14 @@ public class DagCoinApiClientService {
 	private CryptoEngine cryptoEngine;
 	
 	public DagCoinApiClientService(DagCoinParameters params) throws DagCoinRestClientException {
-		// Check the environment 
-		// If environment is 'DEVELOPMENT', fetch params from config.properties
-		// If environment is 'PRODUCTION', use params sent by the ATM
-		if (params.getEnv().equals(DagEnvironment.DEVELOPMENT)) {
-			DagCoinParameters devParams = new DagCoinParameters(
-					DagEnvironment.DEVELOPMENT,
-					PropertiesLoader.getProperty("API_URL"),
-					PropertiesLoader.getProperty("ENCRYPTION_KEY"),
-					PropertiesLoader.getProperty("PUBLIC_KEY"),
-					PropertiesLoader.getProperty("SECRET_KEY"),
-					"");
-			this.params = devParams;
-			this.cryptoEngine = new CryptoEngine(devParams);
-		} else {
-			this.params = params;
-			this.cryptoEngine = new CryptoEngine(params);
-		}
+		log.info("DagCoinApiClientService - Params - " + 
+				"URL - " + params.getApiUrl() + " :: " + 
+				"Encryption Key - " + params.getEncryptionKey() + " :: " + 
+				"Private Key - " + params.getPrivateKey() + " :: " + 
+				"Public Key - " + params.getPublicKey() + " :: " + 
+				"Encryption Key - " + params.getEncryptionKey());
+		this.params = params;
+		this.cryptoEngine = new CryptoEngine(params);
 	}
 
 	/**
@@ -66,6 +54,8 @@ public class DagCoinApiClientService {
 	 * @throws DagCoinRestClientException - in case of an error
 	 */
 	public ExchangeRateResponse getExchangeRate() throws DagCoinRestClientException {
+		log.info("Getting exchange rate for DAG/EUR");
+		
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target(this.params.getApiUrl()).path("/dagcoin/exchangeRate");
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(this.cryptoEngine.getHeaders("{}"));
@@ -79,6 +69,7 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 
@@ -101,6 +92,8 @@ public class DagCoinApiClientService {
 	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public ValidateWalletResponse validateWalletAddress(String walletId) throws DagCoinRestClientException {
+		log.info("Validating wallet with ID - " + walletId);
+		
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target(this.params.getApiUrl())
 				.path("/wallet/" + this.cryptoEngine.encrypt(walletId) + "/validation/check");
@@ -115,6 +108,7 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 
@@ -137,10 +131,9 @@ public class DagCoinApiClientService {
 	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public WalletBalanceResponse getBalance(String walletId) throws DagCoinRestClientException {
+		log.info("Getting wallet balance for - " + walletId);
+		
 		Client client = ClientBuilder.newClient();
-
-		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().build();
-		client.register(feature);
 
 		WebTarget webTarget = client.target(this.params.getApiUrl()).path("/wallet/" + this.cryptoEngine.encrypt(walletId) + "/balance/get");
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(this.cryptoEngine.getHeaders("{}"));
@@ -154,6 +147,7 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 
@@ -177,10 +171,9 @@ public class DagCoinApiClientService {
 	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public CustomerWalletBalanceResponse getCustomerBalance(String walletId) throws DagCoinRestClientException {
+		log.info("Getting customer wallet balance for - " + walletId);
+		
 		Client client = ClientBuilder.newClient();
-
-		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().build();
-		client.register(feature);
 
 		WebTarget webTarget = client.target(this.params.getApiUrl()).path("/customer/wallet/" + this.cryptoEngine.encrypt(walletId) + "/balance/get");
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(this.cryptoEngine.getHeaders("{}"));
@@ -194,11 +187,11 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 
 		String decryptedResponse = this.cryptoEngine.decrypt(responseBody);
-		System.out.println("decrypted response - " + decryptedResponse);
 		CustomerWalletBalanceResponse customerWalletBalanceResponse = new CustomerWalletBalanceResponse();
 		try {
 			customerWalletBalanceResponse = new ObjectMapper().readValue(decryptedResponse, CustomerWalletBalanceResponse.class);
@@ -221,6 +214,11 @@ public class DagCoinApiClientService {
 	 */
 	public TransactionResponse makeTransaction(String recipientWalletId, String amount, String currency)
 			throws DagCoinRestClientException {
+		log.info("Making transaction - " +
+				" WalletID = " + recipientWalletId + 
+				" Amount = " + amount +
+				" Currency = " + currency);
+			
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target(this.params.getApiUrl()).path("/transaction/make");
 
@@ -239,6 +237,7 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 
@@ -261,6 +260,8 @@ public class DagCoinApiClientService {
 	 * @throws DagCoinRestClientException - if there is an error
 	 */
 	public PaperWalletResponse generatePaperWallet() throws DagCoinRestClientException {
+		log.info("Generating paper wallet");
+		
 		Client client = ClientBuilder.newClient();
 		WebTarget webTarget = client.target(this.params.getApiUrl()).path("/paper/wallet/generate");
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(this.cryptoEngine.getHeaders("{}"));
@@ -274,6 +275,7 @@ public class DagCoinApiClientService {
 		
 		String responseBody = response.readEntity(String.class);
 		if (!this.cryptoEngine.validateHeaders(response.getHeaders(), responseBody)) {
+			log.error("Error in validaing headers");
 			throw new DagCoinRestClientException("HMAC Authentication failed", 401);
 		}
 

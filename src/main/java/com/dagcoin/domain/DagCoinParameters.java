@@ -2,29 +2,19 @@ package com.dagcoin.domain;
 
 public class DagCoinParameters {
 	
-	private DagEnvironment env;
 	private String apiUrl;
 	private String encryptionKey;
 	private String publicKey;
 	private String privateKey;
 	private String merchantKey;
 	
-	public DagCoinParameters(DagEnvironment env, String apiUrl, String encryptionKey, String publicKey, String privateKey, String merchantKey) {
+	public DagCoinParameters(String apiUrl, String encryptionKey, String publicKey, String privateKey, String merchantKey) {
 		super();
-		this.env = env;
 		this.apiUrl = apiUrl;
 		this.encryptionKey = encryptionKey;
 		this.publicKey = publicKey;
 		this.privateKey = privateKey;
 		this.merchantKey = merchantKey;
-	}
-	
-	public DagEnvironment getEnv() {
-		return env;
-	}
-	
-	public void setEnv(DagEnvironment env) {
-		this.env = env;
 	}
 
 	public String getApiUrl() {
